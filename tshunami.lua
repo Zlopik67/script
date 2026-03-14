@@ -1,73 +1,9 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("ESCAPE TSUNAMI HACK BY BRATYXANONE90BB", "BloodTheme")
-
--- ГЛАВНЫЙ РАЗДЕЛ
-local Main = Window:NewTab("Main")
-local Section = Main:NewSection("Ультра Хак")
-
--- СУПЕР СКОРОСТЬ
-Section:NewSlider("MEGA SPEED", "Скорость света", 1000, 16, function(s)
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
-end)
-
--- БЕСМЕРТИЕ
-Section:NewToggle("GOD MODE (Бессмертие)", "Тебя не убить", function(state)
-    _G.GodMode = state
-    while _G.GodMode do
-        wait()
-        pcall(function()
-            game.Players.LocalPlayer.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
-            if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-                game.Players.LocalPlayer.Character.Humanoid.Health = 100
-            end
-        end)
-    end
-end)
-
--- БРЕЙНРОТ ЛИМИТ
-Section:NewButton("Взять 16 брейнротов", "Увеличивает вместимость предметов", function()
-    -- Хак на инвентарь (пытаемся обойти лимит веса/количества)
-    pcall(function()
-        local backpack = game.Players.LocalPlayer:FindFirstChild("Backpack")
-        local hum = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-        -- Попытка через кастомные атрибуты игры, если они есть
-        hum:SetAttribute("MaxItems", 16)
-        hum:SetAttribute("CarryLimit", 16)
-        print("Лимит брейнротов изменен на 16!")
-    end)
-end)
-
--- ПОЛЕТ
-Section:NewToggle("Fly Mode (Полет)", "Летай на Q", function(state)
-    _G.Fly = state
-    local player = game.Players.LocalPlayer
-    local char = player.Character
-    local mouse = player:GetMouse()
-    
-    if _G.Fly then
-        local bv = Instance.new("BodyVelocity", char.HumanoidRootPart)
-        bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-        bv.Velocity = Vector3.new(0,0,0)
-        bv.Name = "BratyxaFly"
-        
-        task.spawn(function()
-            while _G.Fly do
-                bv.Velocity = mouse.Hit.lookVector * 100
-                wait()
-            end
-            if char.HumanoidRootPart:FindFirstChild("BratyxaFly") then
-                char.HumanoidRootPart.BratyxaFly:Destroy()
-            end
-        end)
-    end
-end)
-
--- НАСТРОЙКИ
-local Settings = Window:NewTab("Settings")
-local SetSection = Settings:NewSection("Управление")
-
-SetSection:NewKeybind("Меню на INSERT", "Скрыть/Показать", Enum.KeyCode.Insert, function()
-    Library:ToggleUI()
-end)
-
-print("--- [escape tsunami hack by bratyxanone90bb] ACTIVATED ---")
+-- escape tsunami hack by bratyxanone90bb
+local L = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local W = L.CreateLib("ESCAPE TSUNAMI HACK BY BRATYXANONE90BB", "BloodTheme")
+local M = W:NewTab("Main"):NewSection("Bratyxa Ultra")
+M:NewSlider("MEGA SPEED", "", 1000, 16, function(s) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s end)
+M:NewToggle("GOD MODE", "", function(t) _G.G = t while _G.G do task.wait() pcall(function() game.Players.LocalPlayer.Character.Humanoid.Health = 100 end) end end)
+M:NewButton("16 BRAINROTS", "", function() pcall(function() local h = game.Players.LocalPlayer.Character.Humanoid h:SetAttribute("MaxItems", 16) h:SetAttribute("CarryLimit", 16) end) end)
+M:NewToggle("Fly Mode", "", function(t) _G.F = t local p = game.Players.LocalPlayer local r = p.Character.HumanoidRootPart if _G.F then local v = Instance.new("BodyVelocity", r) v.MaxForce = Vector3.new(1e9, 1e9, 1e9) v.Name = "BFly" task.spawn(function() while _G.F do v.Velocity = p:GetMouse().Hit.lookVector * 150 task.wait() end if r:FindFirstChild("BFly") then r.BFly:Destroy() end end) end end)
+W:NewTab("Settings"):NewSection("Keys"):NewKeybind("Menu Toggle", "", Enum.KeyCode.Insert, function() L:ToggleUI() end)
